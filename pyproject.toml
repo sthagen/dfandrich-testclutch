@@ -38,7 +38,7 @@ dependencies = [
 # These version dependencies are more broad as they are not required dependencies
 [project.optional-dependencies]
 test = [
-    "pytest >= 6, < 9"
+    "pytest >= 6, < 10"
 ]
 dev = [
     "flake8 >= 5, < 8",
