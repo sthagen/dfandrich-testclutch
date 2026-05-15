@@ -716,6 +716,7 @@ def output_tests_run_html(trstats: TestRunStats):
     lastformat = ''
     urltitle = ''
     lasttest = None
+    testcount = 0
 
     def print_html(testformat: str, testname: str, url: str, title: bool = False):
         """Print a row of data."""
@@ -726,9 +727,12 @@ def output_tests_run_html(trstats: TestRunStats):
             return
 
         nonlocal lastformat
+        nonlocal testcount
         if testformat != lastformat:
             if lastformat:
                 print('</table>')
+                print(f'Total: {testcount} {escape(lastformat)} tests<br>')
+            testcount = 0
             print('<table>')
             print(f'<tr><th>{escape(testformat)}</th><th>{urltitle}</th></tr>')
             lastformat = testformat
@@ -741,9 +745,13 @@ def output_tests_run_html(trstats: TestRunStats):
                 gap = ' class="gap"'
             lasttest = testnameint
         print(f'<tr><td{gap}>{escape(testname)}</td><td><a HREF="{escape(url)}">Log</a></td></tr>')
+        testcount += 1
 
     output_tests_run_count(trstats, print_html)
-    print('</table></body></html>')
+    print('</table>')
+    if lastformat:
+        print(f'Total: {testcount} {escape(lastformat)} tests<br>')
+    print('</body></html>')
 
 
 def output_feature_matrix_html(fm: FeatureMatrix):
